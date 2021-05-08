@@ -2,10 +2,14 @@
 
 # Запуск
 git clone https://github.com/jamirhan/Encryptor.git
+
 cd Encryptor
 pip freeze > pip install
+
 chmod +x main.py
+
 python3 main.py
+
 Перед вами откроется окно с интуитивно понятным дизайном
 
 # Описание шифров
