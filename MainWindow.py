@@ -90,8 +90,7 @@ class MainWindow:
         self.output_path_entry.insert(tkinter.END, filename)
 
     def encoder_changed(self, *args):
-        print('changed')
-        print(self.encoder_var.get())
+    	pass
 
     def start(self):
         self.window.mainloop()
