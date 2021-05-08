@@ -8,8 +8,11 @@ class CaesarEncoder(BareEncoder.BareEncoder):  # only with english alphabet yet
         self.key = self.find_key()
 
     def find_key(self):
-        if len(self.params) != 0:
-            return int(self.params[0])
+        with open(self.params[0]) as inp:
+            line = inp.readline()
+            if line != "":
+                return int(line)
+
         freq = {}
         with open(self.input_path) as inp:
             for line in inp:

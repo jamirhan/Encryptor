@@ -10,3 +10,8 @@ class WrongArgumentNum(Exception):
         super().__init__()
         self.needed_num = needed_num
         self.provided_num = provided_num
+
+
+class UnexpectedError(Exception):
+    def __init__(self):
+        pass

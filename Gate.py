@@ -25,16 +25,12 @@ class Command:
     def get_mode(self):
         return self.mode
 
-    def __init__(self, string):
-        ar = string.split()
-        self.input_path = ar[0]
-        self.output_path = ar[1]
-        self.encoder = ar[2]
-        self.mode = ar[3]
-        if len(ar) > 3:
-            self.parameters = ar[4:]
-        else:
-            self.parameters = list()
+    def __init__(self, inp, output, encoder, mode, *args):
+        self.input_path = inp
+        self.output_path = output
+        self.encoder = encoder
+        self.mode = mode
+        self.parameters = list(args)
 
 
 class Gate:
@@ -42,8 +38,7 @@ class Gate:
     def __init__(self):
         self.commands = AutomatedList()
 
-    def __handle_command__(self):
-        new_command = Command(input())
+    def __handle_command__(self, new_command):
         if new_command.get_mode() == 'encode':
             if encoders.required_encode_params[new_command.get_encoder()] > len(new_command.get_parameters()):
                 raise exceptions.WrongArgumentNum(encoders.required_encode_params[new_command.get_encoder()],
@@ -56,5 +51,5 @@ class Gate:
 
     def get_last_command(self):
         if len(self.commands) == 0:
-            self.__handle_command__()
+            raise exceptions.UnexpectedError
         return self.commands.get_last_pop()

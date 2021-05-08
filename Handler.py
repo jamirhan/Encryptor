@@ -1,12 +1,10 @@
-import Gate
 import encoders
 import exceptions
 
 
 class Handler:
-    def __init__(self):
-        self.gate_obj = Gate.Gate()
-        self.start()
+    def __init__(self, gate):
+        self.gate_obj = gate
 
     @staticmethod
     def is_running():
@@ -31,25 +29,22 @@ class Handler:
         print("\nexiting...")
         exit(0)
 
-    def start(self):
-        while self.is_running():
-            try:
-                current_command = self.gate_obj.get_last_command()
-                encoder_obj = self.get_encoder_object(current_command)
-                if encoder_obj is not None:
-                    self.operate_code(encoder_obj, current_command.get_mode())
-            except KeyboardInterrupt:
-                self.leave()
-            except TypeError:
-                print('Wrong argument type provided')
-                continue
-            except exceptions.WrongKey as exc:
-                print(f'provided key is of inappropriate length. input message len: {exc.inp_len},'
-                      f' key len: {exc.key_len}')
-                continue
-            except exceptions.WrongArgumentNum as exc:
-                print(f'wrong argument number. Was provided: {exc.provided_num} though needed: {exc.needed_num}')
-                continue
-            except Exception:
-                print('Error occurred, consider checking command signature')
-                continue
+    def handle(self):
+        try:
+            current_command = self.gate_obj.get_last_command()
+            encoder_obj = self.get_encoder_object(current_command)
+            if encoder_obj is not None:
+                self.operate_code(encoder_obj, current_command.get_mode())
+        except KeyboardInterrupt:
+            self.leave()
+        except TypeError:
+            print('Wrong argument type provided')
+        except exceptions.WrongKey as exc:
+            print(f'provided key is of inappropriate length. input message len: {exc.inp_len},'
+                  f' key len: {exc.key_len}')
+        except exceptions.WrongArgumentNum as exc:
+            print(f'wrong argument number. Was provided: {exc.provided_num} though needed: {exc.needed_num}')
+        except exceptions.UnexpectedError:
+            print('something unexpected occurred, we are already solving this problem.')
+        except Exception:
+            print('Error occurred, consider checking command signature')

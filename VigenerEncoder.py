@@ -5,7 +5,14 @@ class VigenerEncoder(BareEncoder.BareEncoder):
 
     def __init__(self, *args):
         super().__init__(*args)
-        self.params[0] = self.params[0].lower()
+        self.params[0] = self.get_param().lower()
+
+    def get_param(self):
+        ans = ''
+        with open(self.params[0]) as key:
+            for line in key:
+                ans += line
+        return ans
 
     @staticmethod
     def multiply(word, new_size):

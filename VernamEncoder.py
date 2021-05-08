@@ -8,10 +8,9 @@ class VernamEncoder(BareEncoder.BareEncoder):
         super().__init__(*args)
         self.key_line = 0
         self.key_ind = 0
-        key_symbols = self.get_key_symbols_num()
-        inp_symbols = self.get_input_symbols_num()
-        if key_symbols != inp_symbols:
-            raise exceptions.WrongKey(key_symbols, inp_symbols)
+        self.key_symbols = self.get_key_symbols_num()
+        self.inp_symbols = self.get_input_symbols_num()
+        self.digits_num = self.get_digits_num()
 
     def get_key_symbols_num(self):
         ans = 0
@@ -20,6 +19,13 @@ class VernamEncoder(BareEncoder.BareEncoder):
                 ans += len(line)
                 if line[-1] == '\n':
                     ans -= 1
+        return ans
+
+    def get_digits_num(self):
+        ans = 0
+        with open(self.input_path) as inp:
+            for line in inp:
+                ans += len(line.split())
         return ans
 
     def get_input_symbols_num(self):
@@ -38,6 +44,8 @@ class VernamEncoder(BareEncoder.BareEncoder):
         return result
 
     def encode(self, line):
+        if self.inp_symbols != self.key_symbols:
+            raise exceptions.WrongKey(self.key_symbols, self.inp_symbols)
         new_line = ''
         index = 0
         while index < len(line):
@@ -55,6 +63,8 @@ class VernamEncoder(BareEncoder.BareEncoder):
         return new_line
 
     def decode(self, line):
+        if self.digits_num != self.key_symbols:
+            raise exceptions.WrongKey(self.key_symbols, self.digits_num)
         new_line = ''
         index = 0
         line = [int(x) for x in line.split()]
