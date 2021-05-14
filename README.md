@@ -4,6 +4,7 @@
 git clone https://github.com/jamirhan/Encryptor.git
 
 cd Encryptor
+
 pip freeze > pip install
 
 chmod +x main.py
